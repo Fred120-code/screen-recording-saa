@@ -1,11 +1,18 @@
 import React from "react";
 import Header from "../components/Header";
+import VideoCard from "../components/VideoCard";
+import { dummyCards } from "@/constants";
 
 const Page = () => {
   return (
     <div className="wrapper page">
       <Header subHeader="Public Library" title="All Vidéo" />
-      <h1 className="text-2xl font-karla"> welcome to the new project</h1>
+
+      <section className="video-grid">
+        {dummyCards.map((card) => (
+          <VideoCard {...card} key={card.id} />
+        ))}
+      </section>
     </div>
   );
 };

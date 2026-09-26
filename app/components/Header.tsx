@@ -1,6 +1,7 @@
 import { ICONS } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
+import DropdownList from "./DropdownList";
 
 const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
   return (
@@ -48,7 +49,7 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
                         width={16}
                         height={16}
                     />
-                    <span> classN
+                    <span>
                         Record a video
                     </span>
                     </button>
@@ -70,7 +71,7 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
                 />
             </div>
 
-            {/* <DropdownList/> */}
+            <DropdownList/>
         </section>
     </header>
   )
