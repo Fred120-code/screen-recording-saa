@@ -14,6 +14,8 @@ const FormField = ({
                 name={id} 
                 id={id}
                 value={value}
+                onChange={onChange}
+                placeholder={placeholder}
               />;
     } else if (type === "select") {
       return (
@@ -33,7 +35,13 @@ const FormField = ({
         </select>
       );
     } else {
-      return <input />;
+      return <input 
+                id={id}
+                name={id}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+              />;
     }
   };
   return (
