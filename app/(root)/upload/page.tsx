@@ -4,15 +4,21 @@ import FormField from "@/app/components/FormField";
 import { ChangeEvent, useState } from "react";
 
 const page = () => {
+  // const [file, setFile] = useState(null);
+  // const [previewUrl, setPreviewUrl] = useState("");
+  // const [duration, setDuration] = useState(0);
+  // const inputRef = useRef(null);
+
   const [error, setError] = useState(null);
+
   const [formData, setFormdata] = useState({
     title: "",
     description: "",
     visibility: "public",
   });
 
-  const video = {}
-  const thumbnail = {}
+  const video = {};
+  const thumbnail = {};
   const handleInputChange = (e: ChangeEvent) => {
     const { name, value } = e.target;
 
