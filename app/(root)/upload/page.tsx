@@ -1,14 +1,11 @@
 "use client";
 import FileInput from "@/app/components/FileInput";
 import FormField from "@/app/components/FormField";
+import { MAX_VIDEO_SIZE } from "@/constants";
+import { useFileInput } from "@/lib/hooks/useFileInput";
 import { ChangeEvent, useState } from "react";
 
 const page = () => {
-  // const [file, setFile] = useState(null);
-  // const [previewUrl, setPreviewUrl] = useState("");
-  // const [duration, setDuration] = useState(0);
-  // const inputRef = useRef(null);
-
   const [error, setError] = useState(null);
 
   const [formData, setFormdata] = useState({
@@ -17,9 +14,12 @@ const page = () => {
     visibility: "public",
   });
 
-  const video = {};
+  const video = useFileInput(
+    MAX_VIDEO_SIZE
+  )
+  
   const thumbnail = {};
-  const handleInputChange = (e: ChangeEvent) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setFormdata((prev) => ({ ...prev, [name]: value }));
@@ -45,7 +45,7 @@ const page = () => {
 
         <FormField
           id="description"
-          label="Description"
+          labeluses="Description"
           value={formData.description}
           onChange={handleInputChange}
           as="textarea"
@@ -59,7 +59,7 @@ const page = () => {
           file={video.file}
           previewUrl={video.previewUrl}
           inputRef={video.inputRef}
-          onChange={video.handleFileChange}
+          onChange={video.handleChangeFile}
           onReset={video.resetFile}
           type="video"
         />
@@ -71,7 +71,7 @@ const page = () => {
           file={thumbnail.file}
           previewUrl={thumbnail.previewUrl}
           inputRef={thumbnail.inputRef}
-          onChange={thumbnail.handleFileChange}
+          onChange={thumbnail.handleChangeFile}
           onReset={thumbnail.resetFile}
           type="image"
         />
