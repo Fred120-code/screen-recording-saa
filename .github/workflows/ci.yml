@@ -1,0 +1,25 @@
+name: CI
+
+on:
+    pull_request:
+        branches: [main]
+
+jobs:
+    check:
+        name: Lint , Test, Build, Security
+        runs-on: ubuntu-latest
+
+        steps: 
+            # recupere le code
+            - name: Recuperation du code
+              uses: actions/checkout@v4
+
+            # intalle node js
+            - name: Installations de node js
+              uses: actions/setup-node@v4
+
+            # installe les  dependances
+            - name: Installation des deps
+              run : npm ci
+
+            
