@@ -19,7 +19,7 @@ const page = () => {
   )
   
   const thumbnail = {};
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setFormdata((prev) => ({ ...prev, [name]: value }));
@@ -45,7 +45,7 @@ const page = () => {
 
         <FormField
           id="description"
-          labeluses="Description"
+          label="Description"
           value={formData.description}
           onChange={handleInputChange}
           as="textarea"
