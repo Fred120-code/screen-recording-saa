@@ -6,7 +6,7 @@ import { dummyCards } from "@/constants";
 const Page = () => {
   return (
     <div className="wrapper page">
-      <Header subHeader="Public Library" title="All Vidéo" />
+      <Header subHeader="Bibliothèque publique" title="Toutes les Vidéos" />
 
       <section className="video-grid">
         {dummyCards.map((card) => (
