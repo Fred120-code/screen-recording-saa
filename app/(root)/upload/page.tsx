@@ -50,7 +50,7 @@ const page = () => {
 
   return (
     <main className="wrapper-md upload-page">
-      <h1>Import a video</h1>
+      <h1>Importer une video</h1>
 
       {error && <div className="error-field"> {error}</div>}
 
@@ -61,10 +61,10 @@ const page = () => {
       >
         <FormField
           id="title"
-          label="Title"
+          label="Titre"
           value={formData.title}
           onChange={handleInputChange}
-          placeholder="Enter a clear and concise video title"
+          placeholder="Saisissez un titre de vidéo clair et concis"
         />
 
         <FormField
@@ -73,7 +73,7 @@ const page = () => {
           value={formData.description}
           onChange={handleInputChange}
           as="textarea"
-          placeholder="Describe what this vidéo is about"
+          placeholder="Décrivez le sujet de cette vidéo."
         />
 
         <FileInput
@@ -89,8 +89,8 @@ const page = () => {
         />
 
         <FileInput
-          id="thumbnail"
-          label="Thumbnail"
+          id="miniature"
+          label="Miniature"
           accept="image/*"
           file={thumbnail.file}
           previewUrl={thumbnail.previewUrl}
@@ -102,18 +102,18 @@ const page = () => {
 
         <FormField
           id="visibility"
-          label="Visibility"
+          label="Visibilité"
           value={formData.visibility}
           onChange={handleInputChange}
           as="select"
           options={[
             { value: "public", label: "Public" },
-            { value: "private", label: "Private" },
+            { value: "private", label: "Privé" },
           ]}
         />
 
         <button type="submit" disabled={isSubmitting} className="submit-button">
-          {isSubmitting ? "Uploading..." : "Upload Video"}
+          {isSubmitting ? "Importation en cours..." : "Importer"}
         </button>
       </form>
     </main>
