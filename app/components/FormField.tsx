@@ -30,6 +30,7 @@ const FormField = ({
         </select>
       ) : (
         <input
+          type={type}
           id={id}
           name={id}
           value={value}

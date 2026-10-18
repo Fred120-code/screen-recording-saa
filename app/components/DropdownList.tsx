@@ -16,7 +16,7 @@ const DropdownList = () => {
               width={14}
               height={14}
             />
-            Most recent
+            Plus récent
           </figure>
           <Image
             src="/assets/icons/arrow-down.svg"
