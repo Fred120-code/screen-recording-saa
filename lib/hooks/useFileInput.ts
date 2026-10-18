@@ -20,15 +20,17 @@ export const useFileInput = (maxSize: number) => {
 
       setPreviewUrl(objectUrl);
 
+      // extraire la durree du fichier video
       if (selectedFile.type.startsWith("video")) {
         const video = document.createElement("video");
         video.preload = "metadata";
 
+        // Verifie si la durree est une valeur finie et valide
         video.onloadeddata = () => {
           if (isFinite(video.duration) && video.duration > 0) {
             setDuration(Math.round(video.duration));
           } else {
-            setDuration(0);
+            setDuration(0); //mettre à 0 si invalide
           }
 
           URL.revokeObjectURL(video.src);

@@ -25,7 +25,7 @@ const FileInput = ({
       />
 
       {!previewUrl ? (
-        <figure onClick={()=> inputRef.current?.click()}>
+        <figure onClick={() => inputRef.current?.click()}>
           <Image
             src="/assets/icons/upload.svg"
             alt="upload"
@@ -50,6 +50,7 @@ const FileInput = ({
               height={16}
             />
           </button>
+          <p>{file?.name}</p>
         </div>
       )}
     </section>
