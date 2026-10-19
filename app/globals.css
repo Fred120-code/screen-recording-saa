@@ -34,14 +34,14 @@
   --background-image-radial-100:
     radial-gradient(
       79.36% 59.94% at 101.94% -1.83%,
-      #ffe5f0 0%,
-      #fff 42%,
+      rgba(129, 140, 248, 0.14) 0%,
+      #0b0f14 42%,
       rgba(0, 0, 0, 0) 42%
     ),
     radial-gradient(
       60.29% 53.62% at 0% 100%,
-      #ffd8e9 0%,
-      #fff 42%,
+      rgba(99, 102, 241, 0.12) 0%,
+      #0b0f14 42%,
       rgba(0, 0, 0, 0) 42%
     );
 }
@@ -53,7 +53,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-geist-karla);\n    background-color: var(--background);\n    color: var(--foreground);
+    font-family: var(--font-geist-karla);
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   select {
