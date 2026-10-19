@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0f14;
+  --foreground: #e5e7eb;
 }
 
 @theme inline {
@@ -13,22 +13,22 @@
 }
 
 @theme {
-  --color-blue-100: #2c325d;
-  --color-light-100: #fff8fb;
-  --color-dark-100: #212121;
-  --color-gray-20: rgba(108, 102, 133, 0.2);
-  --color-gray-25: rgba(108, 102, 133, 0.25);
-  --color-gray-40: rgba(58, 56, 77, 0.04);
-  --color-gray-100: #6c6685;
-  --color-pink-10: #ffeef5;
-  --color-pink-100: #ff4393;
-  --color-orange-100: #fe6247;
+  --color-blue-100: #e5e7eb;
+  --color-light-100: #0f141d;
+  --color-dark-100: #e5e7eb;
+  --color-gray-20: rgba(148, 163, 184, 0.16);
+  --color-gray-25: rgba(148, 163, 184, 0.22);
+  --color-gray-40: rgba(3, 7, 18, 0.72);
+  --color-gray-100: #9ca3af;
+  --color-pink-10: rgba(129, 140, 248, 0.12);
+  --color-pink-100: #818cf8;
+  --color-orange-100: #f59e8b;
   --text-28: 1.75rem;
   --shadow-10: 0px 6px 24px 0px rgba(0, 0, 0, 0.1);
   --shadow-15: 0px 8px 24px 0px rgba(0, 0, 0, 0.15);
   --shadow-20: 0px 10px 30px 0px rgba(0, 0, 0, 0.2);
   --shadow-inset-20:
-    0px 10px 40px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 1px #d7d5dd inset;
+    0px 10px 40px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 1px rgba(148, 163, 184, 0.16) inset;
   --radius-20: 20px;
   --radius-18: 18px;
   --background-image-radial-100:
@@ -53,7 +53,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-geist-karla);
+    font-family: var(--font-geist-karla);\n    background-color: var(--background);\n    color: var(--foreground);
   }
 
   select {
@@ -161,7 +161,7 @@
       @apply flex items-center justify-center lg:w-1/2 w-full lg:h-screen px-10 py-10;
 
       section {
-        @apply rounded-20 bg-white shadow-10 max-w-xl w-full flex flex-col px-5 py-7.5 gap-8;
+        @apply rounded-20 bg-[#111827] shadow-10 max-w-xl w-full flex flex-col px-5 py-7.5 gap-8;
 
         a {
           @apply flex items-center gap-2.5 justify-center;
@@ -180,7 +180,7 @@
         }
 
         button {
-          @apply w-full flex justify-center items-center gap-2.5 bg-white border border-gray-25 rounded-4xl py-4 text-base text-dark-100 font-semibold cursor-pointer -tracking-[0.8px];
+          @apply w-full flex justify-center items-center gap-2.5 bg-[#111827] border border-gray-25 rounded-4xl py-4 text-base text-dark-100 font-semibold cursor-pointer -tracking-[0.8px];
         }
       }
     }
@@ -216,7 +216,7 @@
 
   /* dropdown */
   .dropdown {
-    @apply absolute bg-white shadow-lg rounded-lg flex flex-col gap-2 w-full z-10 top-12;
+    @apply absolute bg-[#111827] shadow-lg rounded-lg flex flex-col gap-2 w-full z-10 top-12;
 
     .list-item {
       @apply px-3 py-2.5 text-sm font-medium -tracking-[0.8px] relative text-dark-100 cursor-pointer hover:bg-pink-100 hover:text-white transition-colors duration-200 ease-in-out rounded-md;
@@ -355,7 +355,7 @@
       }
 
       .dialog-content {
-        @apply relative bg-white rounded-20 p-6 shadow-lg w-full max-w-lg z-10;
+        @apply relative bg-[#111827] rounded-20 p-6 shadow-lg w-full max-w-lg z-10;
 
         figure {
           @apply flex justify-between items-center mb-4;
@@ -540,7 +540,7 @@
     }
 
     .copy-btn {
-      @apply absolute top-3 right-3 shadow-md hover:shadow-lg transition duration-200 bg-white rounded-full size-6 flex items-center justify-center;
+      @apply absolute top-3 right-3 shadow-md hover:shadow-lg transition duration-200 bg-[#111827] rounded-full size-6 flex items-center justify-center;
     }
 
     .duration {
