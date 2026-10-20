@@ -47,7 +47,8 @@ const Navbar = () => {
           </button>
 
           {user && (
-            <button onClick={()=> router.push("/profile/123434")}>
+            <>
+            <button onClick={() => router.push("/profile/123434")}>
               <Image
                 src="/assets/images/dummy.jpg"
                 alt="dummy-profile"
@@ -65,6 +66,7 @@ const Navbar = () => {
                 height={24}
                 className="rotate-180"/>
             </button>
+            </>
           )}
         </figure>
       </nav>
