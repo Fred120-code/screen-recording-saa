@@ -1,8 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0f14;
+  color-scheme: dark;
+  --background: var(--background);
   --foreground: #e5e7eb;
+  --surface: var(--surface);
+  --surface-muted: #0f141d;
+  --muted: #9ca3af;
+  --border: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(148, 163, 184, 0.22);
+  --accent: #818cf8;
+  --accent-soft: rgba(129, 140, 248, 0.12);
+  --overlay: rgba(3, 7, 18, 0.72);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --background: #f8fafc;
+  --foreground: #172033;
+  --surface: #ffffff;
+  --surface-muted: #eef2f7;
+  --muted: #64748b;
+  --border: rgba(51, 65, 85, 0.14);
+  --border-strong: rgba(51, 65, 85, 0.22);
+  --accent: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.10);
+  --overlay: rgba(15, 23, 42, 0.48);
 }
 
 @theme inline {
@@ -13,15 +36,15 @@
 }
 
 @theme {
-  --color-blue-100: #e5e7eb;
-  --color-light-100: #0f141d;
-  --color-dark-100: #e5e7eb;
-  --color-gray-20: rgba(148, 163, 184, 0.16);
-  --color-gray-25: rgba(148, 163, 184, 0.22);
-  --color-gray-40: rgba(3, 7, 18, 0.72);
-  --color-gray-100: #9ca3af;
-  --color-pink-10: rgba(129, 140, 248, 0.12);
-  --color-pink-100: #818cf8;
+  --color-blue-100: var(--foreground);
+  --color-light-100: var(--surface-muted);
+  --color-dark-100: var(--foreground);
+  --color-gray-20: var(--border);
+  --color-gray-25: var(--border-strong);
+  --color-gray-40: var(--overlay);
+  --color-gray-100: var(--muted);
+  --color-pink-10: var(--accent-soft);
+  --color-pink-100: var(--accent);
   --color-orange-100: #f59e8b;
   --text-28: 1.75rem;
   --shadow-10: 0px 6px 24px 0px rgba(0, 0, 0, 0.1);
@@ -35,13 +58,13 @@
     radial-gradient(
       79.36% 59.94% at 101.94% -1.83%,
       rgba(129, 140, 248, 0.14) 0%,
-      #0b0f14 42%,
+      var(--background) 42%,
       rgba(0, 0, 0, 0) 42%
     ),
     radial-gradient(
       60.29% 53.62% at 0% 100%,
       rgba(99, 102, 241, 0.12) 0%,
-      #0b0f14 42%,
+      var(--background) 42%,
       rgba(0, 0, 0, 0) 42%
     );
 }
@@ -56,12 +79,19 @@
     font-family: var(--font-geist-karla);
   }
 
+  html {
+    background: var(--background);
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
+    transition: background-color 180ms ease, color 180ms ease;
   }
 
   select {
+    background-color: var(--surface);
+    color: var(--foreground);
     /* for Firefox */
     -moz-appearance: none;
     /* for Chrome */
@@ -71,6 +101,10 @@
     background-repeat: no-repeat;
     background-position: right 0.7rem top 50%;
     background-size: 0.65rem auto;
+  }
+
+  html[data-theme="light"] select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23172033%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5 5.4-7.8 5.4-12.8c0-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
   }
 
   /* For IE10 */
@@ -166,7 +200,7 @@
       @apply flex items-center justify-center lg:w-1/2 w-full lg:h-screen px-10 py-10;
 
       section {
-        @apply rounded-20 bg-[#111827] shadow-10 max-w-xl w-full flex flex-col px-5 py-7.5 gap-8;
+        @apply rounded-20 bg-[var(--surface)] shadow-10 max-w-xl w-full flex flex-col px-5 py-7.5 gap-8;
 
         a {
           @apply flex items-center gap-2.5 justify-center;
@@ -185,7 +219,7 @@
         }
 
         button {
-          @apply w-full flex justify-center items-center gap-2.5 bg-[#111827] border border-gray-25 rounded-4xl py-4 text-base text-dark-100 font-semibold cursor-pointer -tracking-[0.8px];
+          @apply w-full flex justify-center items-center gap-2.5 bg-[var(--surface)] border border-gray-25 rounded-4xl py-4 text-base text-dark-100 font-semibold cursor-pointer -tracking-[0.8px];
         }
       }
     }
@@ -221,7 +255,7 @@
 
   /* dropdown */
   .dropdown {
-    @apply absolute bg-[#111827] shadow-lg rounded-lg flex flex-col gap-2 w-full z-10 top-12;
+    @apply absolute bg-[var(--surface)] shadow-lg rounded-lg flex flex-col gap-2 w-full z-10 top-12;
 
     .list-item {
       @apply px-3 py-2.5 text-sm font-medium -tracking-[0.8px] relative text-dark-100 cursor-pointer hover:bg-pink-100 hover:text-white transition-colors duration-200 ease-in-out rounded-md;
@@ -285,7 +319,7 @@
       }
 
       p {
-        @apply absolute bottom-0 left-0 right-0 bg-[#111827] text-white px-3 py-1 text-sm truncate;
+        @apply absolute bottom-0 left-0 right-0 bg-[var(--surface)] text-white px-3 py-1 text-sm truncate;
       }
     }
   }
@@ -360,7 +394,7 @@
       }
 
       .dialog-content {
-        @apply relative bg-[#111827] rounded-20 p-6 shadow-lg w-full max-w-lg z-10;
+        @apply relative bg-[var(--surface)] rounded-20 p-6 shadow-lg w-full max-w-lg z-10;
 
         figure {
           @apply flex justify-between items-center mb-4;
@@ -545,11 +579,11 @@
     }
 
     .copy-btn {
-      @apply absolute top-3 right-3 shadow-md hover:shadow-lg transition duration-200 bg-[#111827] rounded-full size-6 flex items-center justify-center;
+      @apply absolute top-3 right-3 shadow-md hover:shadow-lg transition duration-200 bg-[var(--surface)] rounded-full size-6 flex items-center justify-center;
     }
 
     .duration {
-      @apply absolute top-40 right-2 bg-[#111827] font-medium text-white text-xs px-2.5 py-1 rounded-full;
+      @apply absolute top-40 right-2 bg-[var(--surface)] font-medium text-white text-xs px-2.5 py-1 rounded-full;
     }
   }
 
