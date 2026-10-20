@@ -319,7 +319,7 @@ html[data-theme="light"] {
       }
 
       p {
-        @apply absolute bottom-0 left-0 right-0 bg-[var(--surface)] text-white px-3 py-1 text-sm truncate;
+        @apply absolute bottom-0 left-0 right-0 bg-[var(--surface)] text-[var(--foreground)] px-3 py-1 text-sm truncate;
       }
     }
   }
@@ -591,7 +591,7 @@ html[data-theme="light"] {
     }
 
     .duration {
-      @apply absolute top-40 right-2 bg-[var(--surface)] font-medium text-white text-xs px-2.5 py-1 rounded-full;
+      @apply absolute top-40 right-2 bg-[var(--surface)] font-medium text-[var(--foreground)] text-xs px-2.5 py-1 rounded-full;
     }
   }
 
