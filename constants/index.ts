@@ -47,7 +47,6 @@ export const DEFAULT_RECORDING_CONFIG = {
   videoBitsPerSecond: 2500000,
 };
 
-
 export const dummyCards = [
   {
     id: "1",
@@ -136,5 +135,5 @@ export const dummyCards = [
     views: 67,
     visibility: "public",
     duration: 345,
-  }
-]
+  },
+];

@@ -3,7 +3,7 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 
-const page = () => {
+const Page = () => {
   const handleSignIn = async () => {
     await authClient.signIn.social({ provider: "google" });
   };
@@ -35,7 +35,8 @@ const page = () => {
             </figure>
             <p>
               SnapCast makes screen recording easy. From quick walkthroughs to
-              full presentations, it's fast, smooth, and shareable in seconds
+              full presentations, it&apos;s fast, smooth, and shareable in
+              seconds
             </p>
 
             <article>
@@ -88,4 +89,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
