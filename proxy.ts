@@ -3,13 +3,13 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export async function proxy(request: NextRequest) {
-  // const session = await auth.api.getSession({
-  //   headers: await headers(),
-  // });
+ const session = await auth.api.getSession({
+   headers: await headers(),
+ });
 
-  // if (!session && !request.nextUrl.pathname.startsWith("/sign-in")) {
-  //   return NextResponse.redirect(new URL("/sign-in", request.url));
-  // }
+ if (!session && !request.nextUrl.pathname.startsWith("/sign-in")) {
+   return NextResponse.redirect(new URL("/sign-in", request.url));
+ }
 
   return NextResponse.next();
 }
