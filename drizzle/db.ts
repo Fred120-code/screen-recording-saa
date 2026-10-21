@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
-import postgres from "postgres";
 import { neon } from "@neondatabase/serverless";
 
 const connectionString = process.env.DATABASE_URL_POSTGRES;

@@ -2,8 +2,8 @@ import Header from "@/app/components/Header";
 import VideoCard from "@/app/components/VideoCard";
 import { dummyCards } from "@/constants";
 
-const page = async ({ params }: ParamsWithSearch) => {
-  const { id } = await params;
+const Page = async ({ params }: ParamsWithSearch) => {
+  const {  } = await params;
   return (
     <div className="wrapper page">
       <Header
@@ -21,4 +21,4 @@ const page = async ({ params }: ParamsWithSearch) => {
   );
 };
 
-export default page;
+export default Page;
