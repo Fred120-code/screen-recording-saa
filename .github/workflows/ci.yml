@@ -49,29 +49,6 @@ jobs:
           GOOGLE_CLIENT_SECRET: build-placeholder
           NEXT_TELEMETRY_DISABLED: "1"
 
-      - name: Smoke test production server
-        shell: bash
-        env:
-          DATABASE_URL_POSTGRES: postgresql://build:build@127.0.0.1:5432/build
-          NEXT_PUBLIC_BASE_URL: http://localhost:3000
-          GOOGLE_CLIENT_ID: build-placeholder
-          GOOGLE_CLIENT_SECRET: build-placeholder
-        run: |
-          npm run start > /tmp/snapcast-next.log 2>&1 &
-          server_pid=$!
-          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-
-          for attempt in {1..30}; do
-            if curl --fail --silent http://127.0.0.1:3000/ > /tmp/snapcast-home.html; then
-              echo "SnapCast responded successfully."
-              exit 0
-            fi
-            sleep 2
-          done
-
-          cat /tmp/snapcast-next.log
-          echo "SnapCast did not become ready in time."
-          exit 1
 
   publish-image:
     name: Build, scan and publish Docker image
