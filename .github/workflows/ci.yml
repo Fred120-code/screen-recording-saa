@@ -1,25 +1,132 @@
-name: CI
+name: CI and Docker delivery
 
 on:
-    pull_request:
-        branches: [main]
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: snapcast-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
 
 jobs:
-    check:
-        name: Lint , Test, Build, Security
-        runs-on: ubuntu-latest
+  validate:
+    name: Lint, typecheck, build and smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-        steps: 
-            # recupere le code
-            - name: Recuperation du code
-              uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
-            # intalle node js
-            - name: Installations de node js
-              uses: actions/setup-node@v4
+      - name: Install dependencies
+        run: npm ci
 
-            # installe les  dependances
-            - name: Installation des deps
-              run : npm ci
+      - name: Lint
+        run: npm run lint
 
-            
+      - name: TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          DATABASE_URL_POSTGRES: postgresql://build:build@127.0.0.1:5432/build
+          NEXT_PUBLIC_BASE_URL: http://localhost:3000
+          GOOGLE_CLIENT_ID: build-placeholder
+          GOOGLE_CLIENT_SECRET: build-placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Smoke test production server
+        shell: bash
+        env:
+          DATABASE_URL_POSTGRES: postgresql://build:build@127.0.0.1:5432/build
+          NEXT_PUBLIC_BASE_URL: http://localhost:3000
+          GOOGLE_CLIENT_ID: build-placeholder
+          GOOGLE_CLIENT_SECRET: build-placeholder
+        run: |
+          npm run start > /tmp/snapcast-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:3000/ > /tmp/snapcast-home.html; then
+              echo "SnapCast responded successfully."
+              exit 0
+            fi
+            sleep 2
+          done
+
+          cat /tmp/snapcast-next.log
+          echo "SnapCast did not become ready in time."
+          exit 1
+
+  publish-image:
+    name: Build, scan and publish Docker image
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build local image (do not push yet)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: snapcast:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: snapcast:ci
+          format: table
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag and push verified image
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "$DOCKERHUB_USERNAME" ]; then
+            echo "Missing repository secret: DOCKERHUB_USERNAME"
+            exit 1
+          fi
+
+          IMAGE="docker.io/$DOCKERHUB_USERNAME/snapcast"
+          docker tag snapcast:ci "$IMAGE:sha-$IMAGE_SHA"
+          docker tag snapcast:ci "$IMAGE:latest"
+          docker push "$IMAGE:sha-$IMAGE_SHA"
+          docker push "$IMAGE:latest"
