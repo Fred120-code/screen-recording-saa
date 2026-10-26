@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1.7
 
-# Stage 1: install dependencies
-FROM node:22-alpine AS deps
+# Stage 1: installation des dependances
+FROM node:24-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Stage 2: build the Next.js application
-FROM node:22-alpine AS builder
+# Stage 2: build de l'application nextjs
+FROM node:24-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY --from=deps /app/node_modules ./node_modules
@@ -16,15 +16,17 @@ COPY . .
 
 # Build-time placeholders only. Real credentials must be supplied at runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV DATABASE_URL_POSTGRES=postgresql://build:build@127.0.0.1:5432/build
-ENV NEXT_PUBLIC_BASE_URL=http://localhost:3000
-ENV GOOGLE_CLIENT_ID=build-placeholder
-ENV GOOGLE_CLIENT_SECRET=build-placeholder
+ENV DATABASE_URL_POSTGRES=$DATABASE_URL_POSTGRES
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+ENV BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
+ENV BETTER_AUTH_URL=$BETTER_AUTH_URL
 
 RUN npm run build
 
 # Stage 3: minimal production runtime
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -33,7 +35,7 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
 RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nextjs
+  &j& adduser --system --uid 1001 nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
