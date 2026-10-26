@@ -7,21 +7,24 @@ RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Stage 2: build de l'application nextjs
+# Stage 2: build de l'application Next.js
 FROM node:24-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build-time placeholders only. Real credentials must be supplied at runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV DATABASE_URL_POSTGRES=$DATABASE_URL_POSTGRES
-ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-ENV BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
-ENV BETTER_AUTH_URL=$BETTER_AUTH_URL
+
+# Valeurs factices utilisées uniquement pendant le build.
+# Les vrais secrets doivent être fournis au démarrage du conteneur.
+ENV DATABASE_URL_POSTGRES="postgresql://build:build@127.0.0.1:5432/build_placeholder"
+ARG NEXT_PUBLIC_BASE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+ENV GOOGLE_CLIENT_ID="build-placeholder"
+ENV GOOGLE_CLIENT_SECRET="build-placeholder"
+ENV BETTER_AUTH_SECRET="build-only-placeholder-secret-please-replace-at-runtime"
+ENV BETTER_AUTH_URL="http://localhost:3000"
 
 RUN npm run build
 
@@ -35,7 +38,7 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
 RUN addgroup --system --gid 1001 nodejs \
-  &j& adduser --system --uid 1001 nextjs
+    && adduser --system --uid 1001 nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
