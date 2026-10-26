@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1.7
 
-# Stage 1: install dependencies
+# Stage 1: installation des dependances
 FROM node:24-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Stage 2: build the Next.js application
+# Stage 2: build de l'application nextjs
 FROM node:24-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
