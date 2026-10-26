@@ -18,7 +18,6 @@ env:
   NODE_VERSION: "24"
 
 jobs:
-  ## phase de test et de validation
   validate:
     name: Lint, typecheck, build and smoke test
     runs-on: ubuntu-latest
@@ -44,17 +43,16 @@ jobs:
       - name: Build Next.js
         run: npm run build
         env:
-          DATABASE_URL_POSTGRES: ${{ secrets.DATABASE_URL_POSTGRES }}
-          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
-          BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
+          # Build-only values; do not expose production credentials during compilation.
+          DATABASE_URL_POSTGRES: postgresql://build:build@127.0.0.1:5432/build_placeholder
+          NEXT_PUBLIC_BASE_URL: http://localhost:3000
+          GOOGLE_CLIENT_ID: build-placeholder
+          GOOGLE_CLIENT_SECRET: build-placeholder
+          BETTER_AUTH_SECRET: build-only-placeholder-secret-please-replace-at-runtime
+          BETTER_AUTH_URL: http://localhost:3000
           NEXT_TELEMETRY_DISABLED: "1"
 
   publish-image:
-
-    ## buld , scan & de l'image docker
     name: Build, scan and publish Docker image
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: validate
