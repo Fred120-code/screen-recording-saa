@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "22"
+  NODE_VERSION: "24"
 
 jobs:
   validate:
@@ -43,13 +43,13 @@ jobs:
       - name: Build Next.js
         run: npm run build
         env:
-          DATABASE_URL_POSTGRES: postgresql://build:build@127.0.0.1:5432/build
-          NEXT_PUBLIC_BASE_URL: http://localhost:3000
-          GOOGLE_CLIENT_ID: build-placeholder
-          GOOGLE_CLIENT_SECRET: build-placeholder
+          DATABASE_URL_POSTGRES: ${{ secrets.DATABASE_URL_POSTGRES }}
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+          BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
           NEXT_TELEMETRY_DISABLED: "1"
-
-
 
   publish-image:
     name: Build, scan and publish Docker image
@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: ./docker/Dockerfile
           push: false
           load: true
           tags: snapcast:ci
