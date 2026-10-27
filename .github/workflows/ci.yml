@@ -78,21 +78,19 @@ jobs:
           cache-to: type=gha,mode=max
 
       
-      - name: Inspect dependency trees
+      - name: Verify npm is excluded from runtime image
         run: |
-          echo "=== Application dependencies ==="
           docker run --rm --entrypoint sh snapcast:ci -c '
-            cd /app
-            npm ls brace-expansion undici --all || true
-            echo "=== Why are they installed? ==="
-            npm explain brace-expansion || true
-            npm explain undici || true
+            if [ -e /usr/local/lib/node_modules/npm ]; then
+              echo "ERROR: npm is still present in the runtime image"
+              exit 1
+            fi
+            if command -v npm >/dev/null 2>&1; then
+              echo "ERROR: npm executable is still available in the runtime image"
+              exit 1
+            fi
+            echo "OK: npm is not included in the runtime image"
           '
-
-          echo "=== Global npm dependencies ==="
-          docker run --rm --entrypoint npm snapcast:ci \
-            ls -g --all brace-expansion undici || true
-
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@v0.36.0
