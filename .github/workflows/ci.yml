@@ -77,6 +77,25 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      
+      - name: Diagnose vulnerable bundled packages
+        run: |
+          docker run --rm --entrypoint node snapcast:ci -e '
+          const fs = require("fs");
+          const paths = [
+            "/app/node_modules/next/dist/compiled/brace-expansion/package.json",
+            "/app/node_modules/next/dist/compiled/undici/package.json",
+            "/app/node_modules/brace-expansion/package.json",
+            "/app/node_modules/undici/package.json"
+          ];
+          for (const path of paths) {
+            if (fs.existsSync(path)) {
+              const pkg = JSON.parse(fs.readFileSync(path, "utf8"));
+              console.log(`${pkg.name}: ${pkg.version} (${path})`);
+            }
+          }
+          '
+
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@v0.36.0
         with:
